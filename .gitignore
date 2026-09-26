@@ -1,0 +1,47 @@
+# Secrets
+.env
+**/.env
+!**/.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+key.properties
+
+# Python
+venv/
+.venv/
+**/.venv/
+__pycache__/
+*.py[cod]
+
+# Flutter / Dart
+frontend/.dart_tool/
+frontend/build/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/android/.gradle/
+frontend/android/local.properties
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local backend runtime
+logs/
+.backend-processes.json
+tools/cloudflared.exe
+
+# Nested Git backup
+**/.git-backup/
+
+# Downloaded tunnel executables
+tools/*.exe
+
+# Runtime-generated animation files
+static/output_sign_*.glb
+
+# Runtime-generated static files
+static/

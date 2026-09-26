@@ -1,0 +1,12 @@
+# Main API and word-level sign recognition (Python 3.10)
+fastapi==0.138.2
+httpx==0.28.1
+langdetect==1.0.9
+mediapipe==0.10.21
+numpy==1.26.4
+opencv-contrib-python==4.11.0.86
+pygltflib==1.16.5
+python-multipart==0.0.32
+torch>=2.2,<3
+uvicorn[standard]==0.49.0
+websockets==15.0.1
