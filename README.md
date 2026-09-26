@@ -1,33 +1,31 @@
-[English](README.en.md) | **繁體中文**
-
 # SignBridge
 
 <p align="center">
-  <img src="docs/assets/signbridge-cover.png" alt="SignBridge：台灣手語雙向即時翻譯系統" width="100%">
+  <img src="docs/assets/signbridge-cover.png" alt="SignBridge: TSL Two-Way Real-Time Translation System" width="100%">
 </p>
 
-SignBridge 是一套以台灣手語（Taiwanese Sign Language, TSL）為核心的雙向溝通應用程式，整合 Flutter 行動端、手語單詞辨識、Gemma RAG 翻譯與 3D 手語動畫，協助聽人與聾人／聽障者進行即時交流。
+SignBridge is a two-way communication application built around Taiwanese Sign Language (TSL). It combines a Flutter mobile app, word-level sign recognition, Gemma-powered retrieval-augmented generation (RAG), and 3D sign animations to help bridge conversations between hearing and Deaf or hard-of-hearing people.
 
-## 主要功能
+## Features
 
-- **文字轉手語**：將繁體中文或其他語言輸入轉換為台灣手語詞序，並以 3D 角色播放手語動畫。
-- **手語轉文字**：透過手機相機逐詞辨識手語，再由使用者確認並組成句子。
-- **AI 語序轉換**：使用 Gemma 將已確認的手語單詞序列整理成自然的繁體中文。
-- **聊天室**：建立或加入即時對話房間，交換文字、辨識結果與動畫內容。
-- **語音輔助**：支援語音輸入與文字轉語音，降低不同溝通方式之間的阻礙。
-- **多語言輸入**：偵測非中文輸入並先轉換為繁體中文，再進行台灣手語翻譯。
+- **Text to sign:** Converts Traditional Chinese or multilingual input into a TSL gloss sequence and plays the corresponding animations on a 3D avatar.
+- **Sign to text:** Recognizes individual signs through a mobile camera and lets the user review the detected words before composing a sentence.
+- **AI word-order conversion:** Uses Gemma to turn an ordered sequence of confirmed sign words into natural Traditional Chinese.
+- **Chat rooms:** Creates or joins real-time chat rooms for exchanging text, recognition results, and sign animations.
+- **Speech assistance:** Supports speech input and text-to-speech output.
+- **Multilingual input:** Detects non-Chinese input and translates it into Traditional Chinese before producing TSL output.
 
-## 系統架構
+## Architecture
 
 ```text
 Flutter App
    │
    ▼
 Main API (FastAPI, port 8000)
-   ├── 手語單詞辨識（MediaPipe + PyTorch）
-   ├── 對話房間與 WebSocket
-   ├── GLB 動畫選取、合併與快取
-   └── 呼叫 Gemma API
+   ├── Word-level sign recognition (MediaPipe + ST-GCN)
+   ├── Conversation rooms and WebSocket communication
+   ├── GLB animation selection, merging, and caching
+   └── Gemma API client
              │
              ▼
       Gemma RAG API (port 8001)
@@ -36,53 +34,54 @@ Main API (FastAPI, port 8000)
          └── PostgreSQL + pgvector
 ```
 
-## 技術組成
+## Technology Stack
 
-- 行動端：Flutter / Dart
-- 主後端：Python 3.10、FastAPI、MediaPipe、PyTorch、OpenCV
-- AI 翻譯：Google Gemma 4、Transformers、BitsAndBytes
-- RAG：Sentence Transformers、PostgreSQL、pgvector
-- 動畫：glTF / GLB、`pygltflib`
-- 即時通訊：WebSocket
+- Mobile application: Flutter / Dart
+- Main backend: Python 3.10, FastAPI, MediaPipe, PyTorch, OpenCV
+- Sign recognition: Spatial-Temporal Graph Convolutional Network (ST-GCN)
+- AI translation: Google Gemma 4, Transformers, BitsAndBytes
+- Retrieval-augmented generation: Sentence Transformers, PostgreSQL, pgvector
+- Animation: glTF / GLB, `pygltflib`
+- Real-time communication: WebSocket
 
-## 專案結構
+## Repository Structure
 
 ```text
 SignBridge/
-├── frontend/                            # Flutter 行動端
-├── sign_recognition/                    # 單詞辨識服務封裝
-├── TSL-translator-real-time-recognition/ # 單詞辨識模型與特徵處理
-├── Gemma4-TSL-RAG/                      # Gemma 翻譯與 RAG API
-├── adjusted_actions/                    # 手語 GLB 動作資產
-├── tests/                               # 後端與 WebSocket 測試
-├── main.py                              # 主 FastAPI 服務
-├── merge_glb.py                         # GLB 動畫合併工具
-├── requirements.txt                    # 主後端 Python 相依套件
-├── start-backend.ps1                   # Windows 後端啟動腳本
-└── stop-backend.ps1                    # Windows 後端停止腳本
+├── frontend/                             # Flutter mobile application
+├── sign_recognition/                     # Sign-recognition service adapter
+├── TSL-translator-real-time-recognition/ # ST-GCN model and feature pipeline
+├── Gemma4-TSL-RAG/                       # Gemma translation and RAG API
+├── adjusted_actions/                     # GLB sign-animation assets
+├── tests/                                # Backend and WebSocket tests
+├── main.py                               # Main FastAPI service
+├── merge_glb.py                          # GLB animation merger
+├── requirements.txt                     # Main backend dependencies
+├── start-backend.ps1                    # Windows startup script
+└── stop-backend.ps1                     # Windows shutdown script
 ```
 
-## 執行需求
+## Requirements
 
-- Windows 10 或 11
-- Python 3.10（主後端）
-- Python 3.12（Gemma RAG）
+- Windows 10 or 11
+- Python 3.10 for the main backend
+- Python 3.12 for the Gemma RAG service
 - Flutter SDK 3.x
-- PostgreSQL 與 pgvector extension
-- 支援 CUDA 的 NVIDIA GPU（Gemma 4-bit 推論使用）
-- Android 手機或 Android Emulator
-- 已取得 Gemma 模型存取權限的 Hugging Face 帳號
+- PostgreSQL with the pgvector extension
+- An NVIDIA CUDA-capable GPU for 4-bit Gemma inference
+- An Android phone or Android Emulator
+- A Hugging Face account with access to the configured Gemma model
 
-## 安裝
+## Installation
 
-### 1. 下載專案
+### 1. Clone the repository
 
 ```powershell
 git clone https://github.com/Blaire0228/SignBridge.git
 cd SignBridge
 ```
 
-### 2. 建立主後端環境
+### 2. Create the main backend environment
 
 ```powershell
 py -3.10 -m venv venv
@@ -91,7 +90,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. 建立 Gemma RAG 環境
+### 3. Create the Gemma RAG environment
 
 ```powershell
 cd Gemma4-TSL-RAG
@@ -102,32 +101,30 @@ pip install -r requirements.txt
 cd ..
 ```
 
-PyTorch 與 CUDA 的組合會因顯示卡及驅動版本而異。如預設安裝未啟用 GPU，請依 [PyTorch 官方安裝方式](https://pytorch.org/get-started/locally/) 安裝符合本機 CUDA 的版本。
+The correct PyTorch package depends on your GPU and CUDA driver. If the default installation does not enable GPU acceleration, follow the [official PyTorch installation guide](https://pytorch.org/get-started/locally/).
 
-### 4. 設定環境變數
-
-複製範例檔：
+### 4. Configure environment variables
 
 ```powershell
 Copy-Item .\Gemma4-TSL-RAG\.env.example .\Gemma4-TSL-RAG\.env
 ```
 
-編輯 `Gemma4-TSL-RAG/.env`：
+Edit `Gemma4-TSL-RAG/.env`:
 
 ```dotenv
 HF_TOKEN=your_hugging_face_token
 DB_PASSWORD=your_postgresql_password
 ```
 
-### 5. 建立 PostgreSQL 資料庫
+### 5. Configure PostgreSQL
 
-建立資料庫並啟用 pgvector：
+Create the database:
 
 ```sql
 CREATE DATABASE tsl_rag_system;
 ```
 
-連線到 `tsl_rag_system` 後執行：
+Connect to `tsl_rag_system`, then create the extension and tables:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -152,7 +149,7 @@ CREATE TABLE tsl_general_corpus (
 );
 ```
 
-### 6. 安裝 Flutter 相依套件
+### 6. Install Flutter dependencies
 
 ```powershell
 cd frontend
@@ -160,41 +157,41 @@ flutter pub get
 cd ..
 ```
 
-## 啟動後端
+## Running the Backend
 
-確認 PostgreSQL 正在執行，而且兩個 Python 虛擬環境皆已建立後：
+Make sure PostgreSQL is running and both Python environments exist, then run:
 
 ```powershell
 .\start-backend.ps1
 ```
 
-服務預設位址：
+Default service addresses:
 
-- 主 API：`http://127.0.0.1:8000`
-- 主 API 文件：`http://127.0.0.1:8000/docs`
-- Gemma RAG API：`http://127.0.0.1:8001`
-- Gemma RAG API 文件：`http://127.0.0.1:8001/docs`
+- Main API: `http://127.0.0.1:8000`
+- Main API documentation: `http://127.0.0.1:8000/docs`
+- Gemma RAG API: `http://127.0.0.1:8001`
+- Gemma RAG API documentation: `http://127.0.0.1:8001/docs`
 
-停止服務：
+Stop the services with:
 
 ```powershell
 .\stop-backend.ps1
 ```
 
-## 執行 Flutter App
+## Running the Flutter App
 
 ### Android Emulator
 
-Android Emulator 可使用預設的 `http://10.0.2.2:8000` 連線主機：
+The Android Emulator can reach the host through the default `http://10.0.2.2:8000` address:
 
 ```powershell
 cd frontend
 flutter run
 ```
 
-### USB 連接的 Android 手機
+### Android device over USB
 
-啟用手機的開發人員選項與 USB 偵錯後：
+Enable Developer Options and USB debugging, then run:
 
 ```powershell
 & "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" reverse tcp:8000 tcp:8000
@@ -202,25 +199,24 @@ cd frontend
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000
 ```
 
-### 同一個 Wi-Fi 網路
+### Android device on the same Wi-Fi network
 
-確認 Windows 防火牆允許 TCP 8000，並將 `<YOUR_PC_LAN_IP>` 換成執行後端電腦的區域網路 IP：
+Allow TCP port 8000 through Windows Firewall and replace `<YOUR_PC_LAN_IP>` with the backend computer's LAN address:
 
 ```powershell
 cd frontend
 flutter run --dart-define=API_BASE_URL=http://<YOUR_PC_LAN_IP>:8000
 ```
 
-不要將臨時 tunnel URL 或個人網路位址寫入原始碼；需要遠端連線時，請在建置階段透過 `API_BASE_URL` 傳入。
+Do not hard-code temporary tunnel URLs or personal network addresses. Supply remote endpoints at build time through `API_BASE_URL`.
 
+## License and Third-Party Materials
 
-## 授權與第三方內容
+The project source code is licensed under the Apache License 2.0.
 
-專案程式碼的授權會記載於根目錄 `LICENSE`。
+Gemma usage and redistribution are subject to the Google Gemma Terms of Use.
 
-Gemma 模型的使用及散布須遵守 Google Gemma Terms of Use。
-
-## 作者與貢獻者
+## Authors and Contributors
 
 - [@Blaire0228](https://github.com/Blaire0228)
 - [@defyingYang](https://github.com/defyingYang)
