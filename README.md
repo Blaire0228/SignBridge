@@ -1,6 +1,10 @@
 # SignBridge
 
 <p align="center">
+  <b>English</b> | <a href="README_zh.md">繁體中文</a>
+</p>
+
+<p align="center">
   <img src="docs/assets/signbridge-cover.png" alt="SignBridge: TSL Two-Way Real-Time Translation System" width="100%">
 </p>
 
@@ -60,6 +64,25 @@ SignBridge/
 ├── start-backend.ps1                    # Windows startup script
 └── stop-backend.ps1                     # Windows shutdown script
 ```
+
+## Open Source Model Releases & Compliance
+
+SignBridge provides open-source models and datasets on the Hugging Face Hub under permissive licenses, ensuring transparency and reproducibility.
+
+### Hugging Face Assets
+- **Word-Level TSL Recognition Model (ST-GCN):**
+  - Repository: [`dYang1/SignBridge-TSL-STGCN`](https://huggingface.co/dYang1/SignBridge-TSL-STGCN)
+  - License: Apache License 2.0
+  - Contents: Trained checkpoint (`best_model.pt`), network architecture (`model.py`), graph topology (`graph.py`), and landmark extraction modules.
+- **Taiwanese Sign Language Landmark Dataset:**
+  - Repository: [`dYang1/SignBridge-TSL-Landmarks`](https://huggingface.co/dYang1/SignBridge-TSL-Landmarks)
+  - License: Creative Commons Attribution 4.0 International (CC-BY-4.0)
+  - Contents: 55-keypoint skeletal time-series features and TSL gloss annotations.
+
+### Provenance & Compliance Declaration
+1. **Autonomous Development:** The ST-GCN model architecture, training routines, and pre-processing pipelines were engineered independently. No proprietary or pre-trained models from PRC-based entities or restricted foreign-adversary vendors are utilized.
+2. **Localization & Data Integrity:** Training corpora were captured and annotated specifically for Taiwanese Sign Language (TSL) lexical and grammatical standards in Taiwan.
+3. **Open Standards:** Released under Apache-2.0 (code & weights) and CC-BY-4.0 (datasets) to fulfill all open-source competition and security verification requirements.
 
 ## Requirements
 
@@ -215,6 +238,28 @@ Do not hard-code temporary tunnel URLs or personal network addresses. Supply rem
 The project source code is licensed under the Apache License 2.0.
 
 Gemma usage and redistribution are subject to the Google Gemma Terms of Use.
+
+## Citations & References
+
+If you build upon SignBridge or use its components, please cite the underlying models:
+
+```bibtex
+@misc{gemma20264,
+  title={Gemma 4: Open Multimodal Language Models},
+  author={Gemma Team},
+  year={2026},
+  publisher={Google DeepMind},
+  howpublished={\url{https://ai.google.dev/gemma/docs/core/model_card_4}}
+}
+
+@software{SignBridge_TSL_STGCN_2026,
+  author = {SignBridge Development Team},
+  title = {SignBridge-TSL-STGCN: Taiwanese Sign Language Recognition via ST-GCN},
+  year = {2026},
+  publisher = {Hugging Face},
+  howpublished = {\url{https://huggingface.co/dYang1/SignBridge-TSL-STGCN}}
+}
+```
 
 ## Authors and Contributors
 
